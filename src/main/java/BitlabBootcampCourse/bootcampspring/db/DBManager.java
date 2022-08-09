@@ -1,38 +1,42 @@
 package BitlabBootcampCourse.bootcampspring.db;
 
-import BitlabBootcampCourse.bootcampspring.model.Item;
-
 import java.util.ArrayList;
 
 public class DBManager {
-    private static ArrayList<Item> items = new ArrayList<>();
-    private static Long id = 7L;
+
+    private static ArrayList<Students> students = new ArrayList<>();
+    private static Long id = 8L;
 
     static {
-        items.add(new Item(1L, "Macbook Pro 2020", "8 GB RAM 256 GB SSD Intel Core i7", 1499.99));
-        items.add(new Item(2L, "ASUS TUF GAMING", "16 GB RAM 512 GB SSD AMD Ryzen 5", 999.99));
-        items.add(new Item(3L, "Apple Iphone 12 Pro", "6 GB RAM 128 GB Memory Super Retina XDR OLED Display", 1099.99));
-        items.add(new Item(4L, "XIAOMI Redmi Note 8", "6 GB RAM 64 GB Memory Android 9 Pie", 199.99));
-        items.add(new Item(5L, "XIAOMI Redmi Note 10", "8 GB RAM 128 GB Memory Android 11", 299.99));
-        items.add(new Item(6L, "MSI Prestige 15", "Intel Core i7 1024 GB Memory 32 GB RAM", 1999.99));
+        students.add(new Students(1L, "Ilyas", "Zhuanyshev", 88, ' '));
+        students.add(new Students(2L, "Serik", "Erikov", 91, ' '));
+        students.add(new Students(3L, "Erik", "Serikov", 65, ' '));
+        students.add(new Students(4L, "Nurzhan", "Bolatov", 48, ' '));
+        students.add(new Students(5L, "Patrick", "Zuckerberg", 100, ' '));
+        students.add(new Students(6L, "Sabina", "Assetova", 33, ' '));
+        students.add(new Students(7L, "Madina", "Adletova", 77, ' '));
     }
 
-    public static ArrayList<Item> getItems() {
-        return items;
-    }
-
-    public static Item getItem(Long id) {
-        for (Item item : items) {
-            if (item.getId().equals(id)) {
-                return item;
+    public static ArrayList<Students> getAllStudents() {
+        for (Students student : students) {
+            if (student != null) {
+                if (student.getStudent_exam() >= 90) student.setStudent_mark('A'); else
+                    if (student.getStudent_exam() >= 75 && student.getStudent_exam() <= 89) student.setStudent_mark('B'); else
+                        if (student.getStudent_exam() >= 60 && student.getStudent_exam() <= 74) student.setStudent_mark('C'); else
+                            if (student.getStudent_exam() >= 50 && student.getStudent_exam() <= 59) student.setStudent_mark('D'); else student.setStudent_mark('F');
             }
         }
-        return null;
+        return students;
     }
 
-    public static void addItem(Item item) {
-        item.setId(id);
-        items.add(item);
+    public static Students getStudent(Long id) {
+        return students.stream().filter(student -> student.getStudent_id().equals(id)).findFirst().orElse(null);
+    }
+
+    public static Students addStudent(Students student) {
+        student.setStudent_id(id);
+        students.add(student);
         id++;
+        return student;
     }
 }
