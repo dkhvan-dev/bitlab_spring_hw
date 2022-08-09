@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">BITLAB SHOP</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <ul class="nav justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Top Sales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">New Sales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">By Category</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sign In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{'/addItem'}">Add Item</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-12">
+                <figure class="text-center">
+                    <blockquote class="blockquote">
+                        <h1>Welcome to BITLAB SHOP</h1>
+                    </blockquote>
+                    <blockquote class="blockquote-footer">
+                        Electronic devices with high quality and service
+                    </blockquote>
+                </figure>
+                <div class="col-10 mx-auto d-flex flex-wrap justify-content-between">
+                    <div class="card text-white bg-white mb-3 text-center" th:each="item : ${items}" style="max-width: 18rem;">
+                        <input type="hidden" name="id" th:value="${item.getId()}">
+                        <div class="card-header bg-secondary" th:text="${item.getName()}" style="color: #000;"></div>
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: #00b704;">
+                                $<span th:text="${item.getPrice()}"></span>
+                            </h5>
+                            <p class="card-text" th:text="${item.getDescription()}" style="color: #000;"></p>
+                        </div>
+                        <a th:href="@{'/details?id=' + ${item.getId()}}" class="btn btn-success">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
