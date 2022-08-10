@@ -10,11 +10,11 @@ public class DBManager {
     private static Long id = 6L;
 
     static {
-        tasks.add(new Tasks(1L, "Complete Task 7 from Spring Boot till the end of lesson", "Complete Task 7 from Spring Boot till the end of lesson", "23.10.2020", true));
-        tasks.add(new Tasks(2L, "Clear home and buy foods", "Clear home and buy foods", "25.10.2020", true));
-        tasks.add(new Tasks(3L, "Complete all home tasks at the weekend", "Complete all home tasks at the weekend", "28.10.2020", false));
-        tasks.add(new Tasks(4L, "Develop simple project in Spring Boot for the final", "Develop simple project in Spring Boot for the final", "12.12.2020", false));
-        tasks.add(new Tasks(5L, "Learn Italian Language", "Learn Italian Language", "01.05.2021", false));
+        tasks.add(new Tasks(1L, "Complete Task 7 from Spring Boot till the end of lesson", "Complete Task 7 from Spring Boot till the end of lesson", "2020-10-23", true));
+        tasks.add(new Tasks(2L, "Clear home and buy foods", "Clear home and buy foods", "2020-10-25", true));
+        tasks.add(new Tasks(3L, "Complete all home tasks at the weekend", "Complete all home tasks at the weekend", "2020-10-20", false));
+        tasks.add(new Tasks(4L, "Develop simple project in Spring Boot for the final", "Develop simple project in Spring Boot for the final", "2020-12-12", false));
+        tasks.add(new Tasks(5L, "Learn Italian Language", "Learn Italian Language", "2021-05-01", false));
     }
 
     public static ArrayList<Tasks> getAllTasks() {
