@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/main.html">
+    <header layout:fragment="headerFragment" th:insert="~{navbar.html}"></header>
+    <main class="main">
+        <div class="d-flex flex-wrap justify-content-between" layout:fragment="mainFragment">
+            <div class="mt-2" th:each="req : ${applicationRequestList}" style="border: 1px solid grey; border-radius: 5px; width: 630px; padding: 10px;">
+                <h3></span> <span  style="font-weight: lighter">Заявка от</span> <span style="font-weight: bold" th:text="${req.userName}"></span></h3>
+                <p>Курс: <span th:text="${req.courseName}"></span></p>
+                <p th:text="${req.commentary}"></p>
+                <div class="d-flex">
+                    <strong style="margin-right: 20px;">Тел: <strong th:text="${req.phone}"></strong></strong>
+                    <a th:href="@{'/details/' + ${req.id}}">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</html>
