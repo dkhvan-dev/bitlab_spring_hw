@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Item {
+public class Tasks {
     private Long id;
     private String name;
     private String description;
-    private double price;
+    private String deadlineDate;
+    private boolean isCompleted;
 }

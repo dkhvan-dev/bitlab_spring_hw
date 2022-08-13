@@ -1,10 +1,11 @@
 package BitlabBootcampCourse.bootcampspring.controllers;
 
 import BitlabBootcampCourse.bootcampspring.db.DBManager;
-import BitlabBootcampCourse.bootcampspring.model.Item;
+import BitlabBootcampCourse.bootcampspring.model.Tasks;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -14,37 +15,52 @@ import java.util.ArrayList;
 public class HomeController {
 
     @GetMapping(value = "/")
-    public String indexPage(Model model) {
-        ArrayList<Item> items = DBManager.getItems();
-        model.addAttribute("items", items);
+    public String index(Model model) {
+        ArrayList<Tasks> tasks = DBManager.getAllTasks();
+        model.addAttribute("tasks", tasks);
         return "index";
     }
 
-    @GetMapping(value = "/addItem")
-    public String addItemGet() {
-        return "addItem";
-    }
-
-    @PostMapping(value = "/addItem")
-    public String addItemPost(@RequestParam(name = "item_title") String name,
-                              @RequestParam(name = "item_price") double price,
-                              @RequestParam(name = "item_description") String description) {
-        Item item = new Item();
-        item.setName(name);
-        item.setPrice(price);
-        item.setDescription(description);
-        DBManager.addItem(item);
+    @PostMapping(value = "/addTask")
+    public String addTask(@RequestParam(name = "name") String name,
+            @RequestParam(name = "description") String description,
+            @RequestParam(name = "deadlineDate") String deadlineDate,
+            @RequestParam(name = "isCompleted") boolean isCompleted) {
+        Tasks task = new Tasks();
+        task.setName(name);
+        task.setDescription(description);
+        task.setDeadlineDate(deadlineDate);
+        task.setCompleted(isCompleted);
+        DBManager.addTask(task);
         return "redirect:/";
-
     }
 
-    @GetMapping(value = "/details")
-    public String details(@RequestParam(name = "id") Long id,
-            Model model) {
-        Item item = DBManager.getItem(id);
-        System.out.println(id);
-        model.addAttribute("item", item);
+    @GetMapping(value = "/details/{taskId}")
+    public String details(@PathVariable(name = "taskId") Long id,
+                          Model model) {
+        Tasks task = DBManager.getTask(id);
+        model.addAttribute("task", task);
         return "details";
     }
 
+    @PostMapping(value = "/details")
+    public String updateTask(@RequestParam(name = "id") Long id,
+                             @RequestParam(name = "name") String name,
+                             @RequestParam(name = "description") String description,
+                             @RequestParam(name = "deadlineDate") String deadlineDate,
+                             @RequestParam(name = "isCompleted") boolean isCompleted) {
+        Tasks task = DBManager.getTask(id);
+        task.setName(name);
+        task.setDescription(description);
+        task.setDeadlineDate(deadlineDate);
+        task.setCompleted(isCompleted);
+        DBManager.updateTask(task);
+        return "redirect:/details/" + id;
+    }
+
+    @PostMapping(value = "/deleteTask")
+    public String deleteTask(@RequestParam(name = "id") Long id) {
+        DBManager.deleteTask(id);
+        return "redirect:/";
+    }
 }

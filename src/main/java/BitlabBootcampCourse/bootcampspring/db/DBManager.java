@@ -1,38 +1,53 @@
 package BitlabBootcampCourse.bootcampspring.db;
 
-import BitlabBootcampCourse.bootcampspring.model.Item;
+import BitlabBootcampCourse.bootcampspring.model.Tasks;
+import org.springframework.scheduling.config.Task;
 
 import java.util.ArrayList;
 
 public class DBManager {
-    private static ArrayList<Item> items = new ArrayList<>();
-    private static Long id = 7L;
+    private static ArrayList<Tasks> tasks = new ArrayList<>();
+    private static Long id = 6L;
 
     static {
-        items.add(new Item(1L, "Macbook Pro 2020", "8 GB RAM 256 GB SSD Intel Core i7", 1499.99));
-        items.add(new Item(2L, "ASUS TUF GAMING", "16 GB RAM 512 GB SSD AMD Ryzen 5", 999.99));
-        items.add(new Item(3L, "Apple Iphone 12 Pro", "6 GB RAM 128 GB Memory Super Retina XDR OLED Display", 1099.99));
-        items.add(new Item(4L, "XIAOMI Redmi Note 8", "6 GB RAM 64 GB Memory Android 9 Pie", 199.99));
-        items.add(new Item(5L, "XIAOMI Redmi Note 10", "8 GB RAM 128 GB Memory Android 11", 299.99));
-        items.add(new Item(6L, "MSI Prestige 15", "Intel Core i7 1024 GB Memory 32 GB RAM", 1999.99));
+        tasks.add(new Tasks(1L, "Complete Task 7 from Spring Boot till the end of lesson", "Complete Task 7 from Spring Boot till the end of lesson", "2020-10-23", true));
+        tasks.add(new Tasks(2L, "Clear home and buy foods", "Clear home and buy foods", "2020-10-25", true));
+        tasks.add(new Tasks(3L, "Complete all home tasks at the weekend", "Complete all home tasks at the weekend", "2020-10-20", false));
+        tasks.add(new Tasks(4L, "Develop simple project in Spring Boot for the final", "Develop simple project in Spring Boot for the final", "2020-12-12", false));
+        tasks.add(new Tasks(5L, "Learn Italian Language", "Learn Italian Language", "2021-05-01", false));
     }
 
-    public static ArrayList<Item> getItems() {
-        return items;
+    public static ArrayList<Tasks> getAllTasks() {
+        return tasks;
     }
 
-    public static Item getItem(Long id) {
-        for (Item item : items) {
-            if (item.getId().equals(id)) {
-                return item;
+    public static Tasks getTask(Long id) {
+        return tasks.stream().filter(task -> task.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    public static void addTask(Tasks task) {
+        task.setId(id);
+        tasks.add(task);
+        id++;
+    }
+
+    public static void updateTask(Tasks task) {
+        for (Tasks t : tasks) {
+            if (t.getId().equals(task.getId())) {
+                t.setName(task.getName());
+                t.setDescription(task.getDescription());
+                t.setDeadlineDate(task.getDeadlineDate());
+                t.setCompleted(task.isCompleted());
             }
         }
-        return null;
     }
 
-    public static void addItem(Item item) {
-        item.setId(id);
-        items.add(item);
-        id++;
+    public static void deleteTask(Long id) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getId().equals(id)) {
+                tasks.remove(i);
+                break;
+            }
+        }
     }
 }
