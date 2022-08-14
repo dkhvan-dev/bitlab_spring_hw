@@ -1,6 +1,8 @@
 package bootcamp.springdata.controllers;
 
 import bootcamp.springdata.model.ApplicationRequest;
+import bootcamp.springdata.model.Courses;
+import bootcamp.springdata.repository.CoursesRepository;
 import bootcamp.springdata.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,24 +19,40 @@ public class HomeController {
     @Autowired
     private RequestRepository requestRepository;
 
+    @Autowired
+    private CoursesRepository coursesRepository;
+
     @GetMapping(value = "/")
     public String indexPage(Model model) {
-        List<ApplicationRequest> applicationRequestList = requestRepository.findAll();
+        List<ApplicationRequest> applicationRequestList = requestRepository.findAllByOrderByIdAsc();
         model.addAttribute("applicationRequestList", applicationRequestList);
         return "index";
     }
 
     @GetMapping(value = "/addRequest")
     public String addRequestPage(Model model) {
-        List<ApplicationRequest> applicationRequestList = requestRepository.findAll();
+        List<ApplicationRequest> applicationRequestList = requestRepository.findAllByOrderByIdAsc();
         model.addAttribute("applicationRequestList", applicationRequestList);
+        List<Courses> coursesList = coursesRepository.findAll();
+        model.addAttribute("coursesList", coursesList);
         return "addRequest";
     }
 
     @PostMapping(value = "/addRequest")
-    public String addRequest(ApplicationRequest applicationRequest,
-                             Model model) {
-        requestRepository.save(applicationRequest);
+    public String addRequest(@RequestParam(name = "userName") String userName,
+                             @RequestParam(name = "course_id") Long courseId,
+                             @RequestParam(name = "phone") String phone,
+                             @RequestParam(name = "commentary") String commentary) {
+        Courses course = coursesRepository.findById(courseId).orElse(null);
+
+        if (course != null) {
+            ApplicationRequest applicationRequest = new ApplicationRequest();
+            applicationRequest.setUserName(userName);
+            applicationRequest.setPhone(phone);
+            applicationRequest.setCommentary(commentary);
+            applicationRequest.setCourse(course);
+            requestRepository.save(applicationRequest);
+        }
         return "redirect:/";
     }
 

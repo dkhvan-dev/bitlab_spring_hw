@@ -1,6 +1,8 @@
 package bootcamp.springdata.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import javax.persistence.*;
 @Table(name = "requests")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ApplicationRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +22,8 @@ public class ApplicationRequest {
     @Column(name = "user_name")
     private String userName;
 
-    @Column(name = "course_name")
-    private String courseName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Courses course;
 
     @Column(name = "commentary")
     private String commentary;

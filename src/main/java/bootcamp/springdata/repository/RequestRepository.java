@@ -11,4 +11,5 @@ import java.util.List;
 @Transactional
 public interface RequestRepository extends JpaRepository<ApplicationRequest, Long> {
     List<ApplicationRequest> findAllByHandled(boolean handled);
+    List<ApplicationRequest> findAllByOrderByIdAsc();
 }

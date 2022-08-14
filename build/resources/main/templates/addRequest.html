@@ -12,10 +12,14 @@
           <label for="userName" class="form-label">ФИО:</label>
           <input type="text" class="form-control" id="userName" placeholder="ФИО :" name="userName">
         </div>
-        <div class="mb-3">
-          <select class="form-select" name="courseName">
+        <div class="mb-3">>
+          <label for="courseId">Название курса</label>
+          <select class="form-select" name="course_id" id="courseId">
             <option selected>Выберите курс</option>
-            <option th:each="req : ${applicationRequestList}" th:text="${req.courseName}"></option>
+            <option th:each="course : ${coursesList}"
+                    th:text="${course.name + ' - ' + course.price + ' USD'}"
+                    th:value="${course.id}"
+            ></option>
           </select>
         </div>
         <div class="mb-3">
