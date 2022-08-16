@@ -2,7 +2,9 @@ package bootcamp.springdata.controllers;
 
 import bootcamp.springdata.model.ApplicationRequest;
 import bootcamp.springdata.model.Courses;
+import bootcamp.springdata.model.Operators;
 import bootcamp.springdata.repository.CoursesRepository;
+import bootcamp.springdata.repository.OperatorsRepository;
 import bootcamp.springdata.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,6 +24,9 @@ public class HomeController {
 
     @Autowired
     private CoursesRepository coursesRepository;
+
+    @Autowired
+    private OperatorsRepository operatorsRepository;
 
     @GetMapping(value = "/")
     public String indexPage(Model model) {
@@ -39,20 +45,8 @@ public class HomeController {
     }
 
     @PostMapping(value = "/addRequest")
-    public String addRequest(@RequestParam(name = "userName") String userName,
-                             @RequestParam(name = "course_id") Long courseId,
-                             @RequestParam(name = "phone") String phone,
-                             @RequestParam(name = "commentary") String commentary) {
-        Courses course = coursesRepository.findById(courseId).orElse(null);
-
-        if (course != null) {
-            ApplicationRequest applicationRequest = new ApplicationRequest();
-            applicationRequest.setUserName(userName);
-            applicationRequest.setPhone(phone);
-            applicationRequest.setCommentary(commentary);
-            applicationRequest.setCourse(course);
-            requestRepository.save(applicationRequest);
-        }
+    public String addRequest(ApplicationRequest applicationRequest) {
+        requestRepository.save(applicationRequest);
         return "redirect:/";
     }
 
@@ -61,15 +55,36 @@ public class HomeController {
                           Model model) {
         ApplicationRequest applicationRequest = requestRepository.findById(reqId).orElseThrow();
         model.addAttribute("applicationRequest", applicationRequest);
+        List<Operators> operators = operatorsRepository.findAll();
+        model.addAttribute("operators", operators);
         return "details";
     }
 
     @PostMapping(value = "/updateRequest")
-    public String updateRequest(@RequestParam(name = "id") Long id) {
-        ApplicationRequest applicationRequest = requestRepository.findById(id).orElseThrow();
-        applicationRequest.setHandled(true);
-        requestRepository.save(applicationRequest);
-        return "redirect:/details/" + id;
+    public String updateRequest(@RequestParam(name = "request.id") Long requestId,
+                                @RequestParam(name = "op.id") List<Operators> operators,
+                                Model model) {
+        ApplicationRequest applicationRequest = requestRepository.findById(requestId).orElseThrow();
+        if (applicationRequest != null && operators!=null) {
+            applicationRequest.setOperators(operators);
+            applicationRequest.setHandled(true);
+            requestRepository.save(applicationRequest);
+        }
+        return "redirect:/details/" + applicationRequest.getId();
+    }
+
+    @PostMapping(value = "/deleteOperator")
+    public String deleteOperator(@RequestParam(name = "request.id") Long requestId,
+                                 @RequestParam(name = "operator.id") Long operatorId) {
+        ApplicationRequest applicationRequest = requestRepository.findById(requestId).orElseThrow();
+        if (applicationRequest != null) {
+            Operators operator = operatorsRepository.findById(operatorId).orElseThrow();
+            if (operator != null) {
+                applicationRequest.getOperators().remove(operator);
+                requestRepository.save(applicationRequest);
+            }
+        }
+        return "redirect:/details/" + requestId;
     }
 
     @PostMapping(value = "/deleteRequest")

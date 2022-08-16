@@ -5,7 +5,7 @@
     <header layout:fragment="headerFragment" th:insert="~{navbar.html}"></header>
     <main class="main">
         <div class="d-flex flex-wrap justify-content-between" layout:fragment="mainFragment">
-            <div class="mt-2" th:each="req : ${applicationRequestList}" style="border: 1px solid grey; border-radius: 5px; width: 630px; padding: 10px;">
+            <div class="col-5 mt-2" th:each="req : ${applicationRequestList}" style="border: 1px solid grey; border-radius: 5px; padding: 10px;">
                 <h3><span style="font-weight: bold" th:text="${req.isHandled() == false ? '*(Новая)' : ''}" th:style="${req.isHandled() == false ? 'color: red;' : ''}"></span> <span  style="font-weight: lighter">Заявка от</span> <span style="font-weight: bold" th:text="${req.userName}"></span></h3>
                 <p>Курс: <span th:text="${req.course.name}"></span></p>
                 <p th:text="${req.commentary}"></p>

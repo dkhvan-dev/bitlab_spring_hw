@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "requests")
@@ -24,6 +25,9 @@ public class ApplicationRequest {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Courses course;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Operators> operators;
 
     @Column(name = "commentary")
     private String commentary;

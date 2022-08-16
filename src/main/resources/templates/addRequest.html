@@ -14,7 +14,7 @@
         </div>
         <div class="mb-3">>
           <label for="courseId">Название курса</label>
-          <select class="form-select" name="course_id" id="courseId">
+          <select class="form-select" name="course.id" id="courseId">
             <option selected>Выберите курс</option>
             <option th:each="course : ${coursesList}"
                     th:text="${course.name + ' - ' + course.price + ' USD'}"
